@@ -1,0 +1,35 @@
+{
+  "model_version": "heatguard-xgb-v1",
+  "model_type": "XGBoost Regressor",
+  "data_source": "Open-Meteo historical ERA5",
+  "cities": [
+    "bengaluru",
+    "chennai",
+    "coimbatore"
+  ],
+  "training_samples": 78912,
+  "features": [
+    "temperature",
+    "humidity",
+    "wind_speed",
+    "apparent_temperature",
+    "shortwave_radiation",
+    "hour",
+    "day_of_year",
+    "temp_humidity_interaction",
+    "wind_cooling",
+    "radiation_load"
+  ],
+  "target": "thermal_stress_score (0-100)",
+  "target_type": "MODELED environmental thermal-stress index",
+  "metrics": {
+    "mae": 0.297,
+    "r2": 0.9994
+  },
+  "limitations": [
+    "Target is a modeled environmental thermal-stress index.",
+    "Model is not clinically validated.",
+    "ERA5 is reanalysis data and is not equivalent to direct station observations.",
+    "Regional and occupational calibration is recommended before operational deployment."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "heatguard-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Automated Human Thermal-Stress Early Warning & Prediction System",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\" \"npm run dev:ml\"",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "dev:ml": "cd ml && python -m uvicorn inference.app:app --reload --port 8001",
+    "build": "npm run build --prefix client && npm run build --prefix server",
+    "train:ml": "cd ml && python training/train.py"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
