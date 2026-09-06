@@ -10,7 +10,14 @@ import { errorHandler } from './middleware/errorHandler.js';
 const app = express();
 const PORT = parseInt(process.env.PORT || '3001', 10);
 
-app.use(cors({ origin: ['http://localhost:5173', 'http://localhost:4173'], credentials: true }));
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:4173',
+    'https://heatguard-frontend.onrender.com'
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 app.get('/api/health', (_req, res) => {
