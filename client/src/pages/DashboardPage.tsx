@@ -9,7 +9,7 @@ import { ThermalStressChart } from '../components/ThermalStressChart';
 import { AlertList } from '../components/AlertCard';
 import { GuidanceCard, OfficialWarningCard, ExposureSelector } from '../components/GuidanceCard';
 import { RiskMap } from '../components/RiskMap';
-import { LoadingState, ErrorState, DataFreshness } from '../components/common';
+import { LoadingState, ErrorState, DataFreshness, DataSourceBadge } from '../components/common';
 import { useApp } from '../context/AppContext';
 import { api } from '../services/api';
 import type { LocationInfo, RiskMapData } from '../types';
@@ -78,9 +78,18 @@ const data = dashboard;
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <ExposureSelector value={exposure} onChange={setExposure} />
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <span className="text-slate-400">
+            Model: <strong className="text-slate-200">{data.prediction.modelVersion}</strong>
+          </span>
+          <DataSourceBadge badge={data.prediction.badge} />
+          <span className={data.prediction.isFallback ? 'text-amber-400' : 'text-emerald-400'}>
+            Fallback: {data.prediction.isFallback ? 'true' : 'false'}
+          </span>
+        </div>
         {data.prediction.isFallback && (
-          <span className="text-xs text-amber-400 border border-amber-500/30 rounded px-2 py-1">
-            ML fallback active — physics-based predictions
+          <span className="w-full text-xs text-amber-400 border border-amber-500/30 rounded px-2 py-1">
+            ML service unavailable — showing physics-based fallback predictions.
           </span>
         )}
       </div>

@@ -20,8 +20,11 @@ export function PeakCard({ prediction }: { prediction: MLPrediction }) {
           <p className="text-sm text-slate-300 mb-1">
             Expected peak: <strong>{formatTimeRange(prediction.peakTimeStart, prediction.peakTimeEnd)}</strong>
           </p>
+          <p className="text-sm text-slate-300 mb-1">
+            Peak risk: <strong>{prediction.peakScore} — {prediction.peakCategory}</strong>
+          </p>
           <p className="text-xs text-slate-400">
-            Thermal stress is expected to increase before the peak period.
+            Model: {prediction.modelVersion} · Source: {prediction.badge} · Fallback: {prediction.isFallback ? 'true' : 'false'}
           </p>
         </>
       ) : (

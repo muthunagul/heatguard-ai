@@ -17,6 +17,18 @@ interface MLForecastRequest {
   model_version?: string;
 }
 
+interface MLServiceResponse {
+  predictions: { time: string; score: number; category: string }[];
+  peak_score: number;
+  peak_category: string;
+  peak_time_start: string | null;
+  peak_time_end: string | null;
+  time_to_peak_minutes: number | null;
+  trend: TrendDirection;
+  trend_factors: string[];
+  model_version: string;
+}
+
 export async function getMLPrediction(
   current: WeatherCurrent,
   hourly: WeatherHourly[]
@@ -43,7 +55,16 @@ export async function getMLPrediction(
       model_version: process.env.ML_MODEL_VERSION || 'heatguard-xgb-v1',
     };
 
-    const { data } = await axios.post(`${ML_URL}/predict`, payload, { timeout: 15000 });
+    const { data } = await axios.post<MLServiceResponse>(`${ML_URL}/predict`, payload, { timeout: 15000 });
+    if (
+      !data ||
+      !Array.isArray(data.predictions) ||
+      typeof data.peak_score !== 'number' ||
+      typeof data.model_version !== 'string'
+    ) {
+      throw new Error('ML service returned an invalid prediction response');
+    }
+
     return {
       predictions: data.predictions.map((p: { time: string; score: number; category: string }) => ({
         time: p.time,
